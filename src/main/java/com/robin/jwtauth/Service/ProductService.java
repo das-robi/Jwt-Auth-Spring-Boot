@@ -4,7 +4,6 @@ import com.robin.jwtauth.Model.Product;
 import com.robin.jwtauth.Repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -37,13 +36,21 @@ public class ProductService {
         return productRepo.save(product);
     }
 
-    public Product updateProduct(int prodId, Product product, MultipartFile imgFile) throws IOException {
+    public Product updateProduct(Integer id, Product product, MultipartFile imgFile) throws IOException {
 
-        product.setImgName(imgFile.getOriginalFilename());
-        product.setImgData(imgFile.getBytes());
-        product.setImgType(imgFile.getContentType());
+        Product existingProd = productRepo.findById(id).orElseThrow(()-> new RuntimeException("Product is not found"));
 
-        return productRepo.save(product);
+        existingProd.setProdName(product.getProdName());
+        existingProd.setBrand(product.getBrand());
+        existingProd.setDescription(product.getDescription());
+        existingProd.setPrice(product.getPrice());
+
+        if (imgFile != null && !imgFile.isEmpty()) {
+            existingProd.setImgName(imgFile.getOriginalFilename());
+            existingProd.setImgData(imgFile.getBytes());
+            existingProd.setImgType(imgFile.getContentType());
+        }
+        return productRepo.save(existingProd);
 
     }
 
