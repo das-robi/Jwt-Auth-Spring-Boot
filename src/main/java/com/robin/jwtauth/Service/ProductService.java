@@ -51,7 +51,6 @@ public class ProductService {
             existingProd.setImgType(imgFile.getContentType());
         }
         return productRepo.save(existingProd);
-
     }
 
     public void deleteProduct(Product product) {

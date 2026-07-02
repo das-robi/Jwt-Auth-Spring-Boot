@@ -14,18 +14,18 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/products")
+    @GetMapping("/allproducts")
     public ResponseEntity<List<Product>> geAllProducts(){
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/productbyid/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable int id){
         Product product = productService.getProductById(id);
 
@@ -35,7 +35,7 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/product", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/addproduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addProduct(@RequestPart("product") String productJson, @RequestPart(value = "imgFile", required = false) MultipartFile imgFile){
 
         try {
@@ -65,7 +65,7 @@ public class ProductController {
     }
 
 
-    @PutMapping(value = "/product/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/product/updateproduct/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> updateProduct(@PathVariable Integer id, @RequestPart("product") String productJson,
                                                 @RequestPart(value = "imgFile", required = false) MultipartFile imgFile){
 
@@ -75,6 +75,7 @@ public class ProductController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Product product = objectMapper.readValue(productJson, Product.class);
+
             product1 = productService.updateProduct(id, product, imgFile);
         } catch (IOException e) {
             return new ResponseEntity<>("Faild to update", HttpStatus.BAD_REQUEST);
@@ -92,7 +93,7 @@ public class ProductController {
     }
 
 
-    @DeleteMapping("/product/delete/{id}")
+    @DeleteMapping("/product/deleteproduct/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id){
         Product product = productService.getProductById(id);
 
