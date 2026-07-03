@@ -1,5 +1,6 @@
 package com.robin.jwtauth.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class Product {
     private String imgType;
 
     @Lob
+    @JsonIgnore
     private byte[] imgData;
 
 

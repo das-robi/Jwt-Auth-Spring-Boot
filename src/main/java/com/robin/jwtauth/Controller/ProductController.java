@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class ProductController {
 
     @Autowired
@@ -53,9 +53,9 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}/image")
-    public ResponseEntity<byte[]> getProductIdByImage(@PathVariable int prodId){
+    public ResponseEntity<byte[]> getProductIdByImage(@PathVariable int id){
 
-        Product product = productService.getProductById(prodId);
+        Product product = productService.getProductById(id);
 
         byte[] imgByte = product.getImgData();
 
